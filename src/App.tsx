@@ -1,25 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import Board from './components/Board';
 import './App.css';
 
 function App() {
+  const [width, setWidth] = useState(10);
+  const [height, setHeight] = useState(10);
+
+  const updateWidth = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const w = Number(e.target.value)
+    setWidth(w)
+  }
+
+  const updateHeight = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const h = Number(e.target.value)
+    setHeight(h)
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      height: <input type="number" value={height} onChange={updateHeight} />
+      <br />
+      width: <input type="number" value={width} onChange={updateWidth} />
+      <div className="App">
+        <Board height={height} width={width} />
+      </div>
+    </>
   );
 }
 
