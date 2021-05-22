@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import Cell from './Cell'
+import useBoard from '../hooks/useBoard'
 
 type BoardProps = {
   height: number;
@@ -8,19 +9,21 @@ type BoardProps = {
 }
 
 const Board: React.FC<BoardProps> = ({ height, width }) => {
-  const createInitBoard = () => {
-    const newBoardState: boolean[][] = []
-    for (var h = 0; h < height; h++) {
-      const newRow = []
-      for (var w = 0; w < width; w++) {
-        newRow.push(Math.random() * 10 < 7)
-      }
-      newBoardState.push(newRow)
-    }
-    return newBoardState
-  }
 
-  const [boardState, setBoardState] = useState<boolean[][]>(createInitBoard());
+  const [boardState, resetBoard, updateBoard, createInitBoard] = useBoard(height, width)
+  // const createInitBoard = () => {
+  //   const newBoardState: boolean[][] = []
+  //   for (var h = 0; h < height; h++) {
+  //     const newRow = []
+  //     for (var w = 0; w < width; w++) {
+  //       newRow.push(Math.random() * 10 < 7)
+  //     }
+  //     newBoardState.push(newRow)
+  //   }
+  //   return newBoardState
+  // }
+
+  // const [boardState, setBoardState] = useState<boolean[][]>(createInitBoard());
 
   // セルの生き死にを計算する
   const check = (h: number, w: number) => {
@@ -54,23 +57,23 @@ const Board: React.FC<BoardProps> = ({ height, width }) => {
     return boardState[h][w]
   }
 
-  useEffect(() => {
-    setBoardState(createInitBoard())
-  }, [width, height])
+  // useEffect(() => {
+  //   setBoardState(createInitBoard())
+  // }, [width, height])
 
-  const resetBoard = () => {
-    const newBoardState: boolean[][] = createInitBoard();
-    setBoardState(newBoardState)
-  }
+  // const resetBoard = () => {
+  //   const newBoardState: boolean[][] = createInitBoard();
+  //   setBoardState(newBoardState)
+  // }
 
-  const updateBoard = () => {
+  const nextBoard = () => {
     const newBoardState: boolean[][] = createInitBoard();
     for (var h = 0; h < height; h++) {
       for (var w = 0; w < width; w++) {
         newBoardState[h][w] = check(h, w)
       }
     }
-    setBoardState(newBoardState)
+    updateBoard(newBoardState)
   }
 
   return (
@@ -88,7 +91,7 @@ const Board: React.FC<BoardProps> = ({ height, width }) => {
           })}
         </tbody>
       </table>
-      <button onClick={updateBoard}>Update</button>
+      <button onClick={nextBoard}>Update</button>
       <button onClick={resetBoard}>Reset</button>
     </>
   )
