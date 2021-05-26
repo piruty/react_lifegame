@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Board from './components/Board';
+import Board from './components/LifeGame';
 import './App.css';
 
 function App() {
